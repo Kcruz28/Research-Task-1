@@ -1,0 +1,14 @@
+From: alex.johnson@example.com  
+To: samira.patel@example.com  
+Subject: Team Meeting Reminder  
+Date: June 5, 2025, 9:15 AM  
+
+Hi Samira,
+
+Just a quick reminder that our next product development meeting is scheduled for June 10, 2025 at 3:00 PM in Conference Room B.  
+Please bring your progress report on the new app prototype and any questions you have about the timeline.  
+
+Let me know if you need to reschedule or if you have any materials to share beforehand.
+
+Thanks,  
+Alex

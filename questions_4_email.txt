@@ -1,0 +1,11 @@
+Question: Who sent the email?
+Answer: Alex Johnson.
+
+Question: What is the subject of the email?
+Answer: Team Meeting Reminder.
+
+Question: What room is the meeting in?
+Answer: Conference Room B.
+
+Question: What is the meeting about?
+Answer: Product development meeting.
