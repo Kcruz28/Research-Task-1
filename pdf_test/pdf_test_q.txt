@@ -1,0 +1,39 @@
+What does BERT stand for?
+
+Which company developed BERT?
+
+What is the main goal of BERT?
+
+What type of model architecture does BERT use?
+
+What is the purpose of the [CLS] token in BERT?
+
+What is the purpose of the [SEP] token in BERT?
+
+What does the Masked Language Model (MLM) task involve?
+
+What is the Next Sentence Prediction (NSP) task?
+
+Which two large text corpora were used to pre-train BERT?
+
+How many parameters does BERTBASE have?
+
+How does BERT differ from previous unidirectional language models?
+
+Why is bidirectionality important for BERT’s performance?
+
+How does BERT handle input sequences containing sentence pairs?
+
+What masking strategy does BERT use during pre-training for MLM?
+
+Why does BERT sometimes replace masked tokens with random tokens or keep them unchanged?
+
+How does BERT’s pre-training procedure help with downstream tasks?
+
+What is the difference between feature-based and fine-tuning approaches in using pre-trained models?
+
+How does BERT perform on the GLUE benchmark compared to previous models?
+
+What are the main advantages of BERT for question answering tasks?
+
+How does BERT’s architecture allow it to be adapted to different NLP tasks with minimal changes?

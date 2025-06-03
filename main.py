@@ -7,27 +7,31 @@ logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
 
 if "__main__" == __name__:
-    print("-" * 100)
-    text_type = input("Enter the type of text [pdf, txt] ")
-    print("-"*100)
-
-    if text_type.lower() not in ["pdf", "txt"]:
-        print("Please enter a valid text type")
+    path = "small_text.txt"
+    split_path = path.split(".")
+    if split_path[-1].lower() == "pdf":
+        text_type = "pdf"
+    elif split_path[-1].lower() == "txt":
+        text_type = "txt"
+    else:
+        print("Unsupported file type. Please provide a PDF or TXT file.")
         exit(1)
+
+    print("Loading models")
+    elisa = cooking.Elisa()
 
     while True:
         print("-"*100)
         question = input("What is your question? ")
         print("-" * 100)
         if question.lower() in ["exit", "quit", 'q']:
-            print("Exiting the program. BYYEEEEEEEE")
+            print("Exiting. BYYEEEEEEEE")
             break
         elif not question.strip():
             print("Please enter a valid question.")
             continue
 
-        # path = "BERT- Pre-training of Deep Bidirectional Transformers for Language Understanding.pdf"
-        path = "wall_china.txt"
-        elisa = cooking.Elisa(question)
+        elisa.set_question(question)
         elisa.add_document(path, text_type)
-        elisa.query_parsing2()
+        elisa.query_parsing()
+        elisa.query_parsing_tfidf()

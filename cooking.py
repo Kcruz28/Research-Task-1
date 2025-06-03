@@ -12,7 +12,8 @@ from pdfminer.layout import LAParams
 from whoosh.analysis import StemmingAnalyzer, CharsetFilter
 from whoosh.support.charset import accent_map
 import logging
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
@@ -22,8 +23,7 @@ logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
 
 class Elisa:
-    def __init__(self, user_question):
-        self.user_question = user_question
+    def __init__(self):
         self.nlp = spacy.load("en_core_web_sm")
         self.answers = []
 
@@ -50,12 +50,15 @@ class Elisa:
         else:
             self.ix = index.open_dir("indexdir")
 
-        self.search_terms = self.extract_question_entities(self.nlp(self.user_question))
-        print(f"Extracted search terms: {self.search_terms}")
+
+    def set_question(self, question):
+        self.user_question = question
+        self.search_terms = self.extract_question_entities(self.nlp(question))
+        print(f"Updated search terms: {self.search_terms}")
 
     def pdf_to_text(self, file_path):
         if file_path.lower().endswith(".pdf"):
-            # Use pdfminer.six instead of pdfplumber
+
             laparams = LAParams(char_margin=1.5, line_margin=0.5)
             try:
                 text = extract_text(file_path, laparams=laparams)
@@ -65,29 +68,40 @@ class Elisa:
             with open(file_path, "r", encoding="utf-8") as f:
                 text = f.read()
         return text
+    
+    def chunk_text(self, text, chunk_size=500, overlap=50):
+
+        if len(text) <= chunk_size:
+            return [text]
+        chunks = []
+        start = 0
+        while start < len(text):
+            end = min(start + chunk_size, len(text))
+            chunks.append(text[start:end])
+            start += chunk_size - overlap
+        return chunks
 
     def add_document(self, file_path, text_type):
-
         if text_type.lower() == "pdf":
             document_text = self.pdf_to_text(file_path)
         else:
             with open(file_path, "r", encoding="utf-8") as f:
                 document_text = f.read()
 
-        writer = self.ix.writer()
+        chunks = self.chunk_text(document_text, chunk_size=1000, overlap=200)  # Adjustable sizes
 
-        # Check if document is already indexed
+        writer = self.ix.writer()
         with self.ix.searcher() as searcher:
             query = QueryParser("path", self.ix.schema).parse(f'"{file_path}"')
             results = searcher.search(query)
             if results:
-                # print(f"Document {file_path} is already indexed.")
+                print(f"Document {file_path} already indexed.")
                 return
 
-        # Add document to index
-        writer.add_document(content=document_text, path=file_path)
+        for idx, chunk in enumerate(chunks):
+            writer.add_document(content=chunk, path=f"{file_path}#chunk{idx}")
         writer.commit()
-        print(f"Document {file_path} added to index.")
+        print(f"Document {file_path} added to index in {len(chunks)} chunks.")
 
     def extract_question_entities(self, doc):
         terms = [
@@ -97,37 +111,8 @@ class Elisa:
         ]
         return " ".join(terms)
 
-    def extract_entities(self, doc):
-        for entity in doc.ents:
-            print(entity.text, entity.label_)
-
-    def generate_text(self, pass_content):
-        result = self.qa_pipeline(question=self.user_question, context=pass_content)
-
-        #  extracted answer
-        print(f"Answer: {result['answer']}")
-        print(f"Score: {result['score']}")
-
-    def generate_text2(self, pass_content):
-        return self.qa_pipeline(question=self.user_question, context=pass_content)
 
     def query_parsing(self):
-        w = scoring.BM25F(B=0.9, content_B=0.9, K1=1.2)
-        qp = QueryParser("content", self.ix.schema, group=OrGroup.factory(0.9))
-
-        with self.ix.searcher(weighting=w) as searcher:
-            print("Index contains", searcher.doc_count(), "document(s).")
-            # Parse using OR‐semantics
-            query = qp.parse(self.search_terms)
-            results = searcher.search(query, limit=20)
-            print("Found", len(results), "hits for:", self.search_terms)
-            for hit in results:
-                self.generate_text(hit["content"])
-                poss_answer = self.generate_text2(hit["content"])
-                self.answers.append((poss_answer["score"], poss_answer["answer"]))
-        self.ranking()
-
-    def query_parsing2(self):
         w = scoring.BM25F(B=0.9, content_B=0.9, K1=1.2)
         qp = QueryParser("content", self.ix.schema, group=OrGroup.factory(0.9))
 
@@ -169,9 +154,46 @@ class Elisa:
             print("Score:", answer["score"])
             print("=" * 100)
 
-    def ranking(self):
-        if not self.answers:
-            print("No answers found.")
-            return
-        self.answers.sort(reverse=True, key=lambda x: x[0])
-        print("top answer: ", self.answers[0][1])
+    def query_parsing_tfidf(self):
+        with self.ix.searcher() as searcher:
+            print("Index contains", searcher.doc_count(), "document(s).")
+            qp = QueryParser("content", self.ix.schema, group=OrGroup.factory(0.9))
+            query = qp.parse(self.search_terms)
+            hits = searcher.search(query, limit=20)  # retrieve candidates
+            print("TF-IDF found", len(hits), "candidates.")
+
+            if not hits:
+                print("No candidates found.")
+                return
+
+            candidate_texts = [hit["content"] for hit in hits]
+            doc_paths = [hit["path"] for hit in hits]
+
+            # Prepare the corpus: combine question and candidate texts
+            corpus = [self.user_question] + candidate_texts
+
+            # Initialize and fit TfidfVectorizer
+            vectorizer = TfidfVectorizer(stop_words="english")
+            tfidf_matrix = vectorizer.fit_transform(corpus)
+
+            # Compute cosine similarity between the question and documents
+            similarities = cosine_similarity(
+                tfidf_matrix[0:1], tfidf_matrix[1:]
+            ).flatten()
+
+            # Select the best matching document
+            best_idx = int(np.argmax(similarities))
+            best_score = similarities[best_idx]
+            best_text = candidate_texts[best_idx]
+            best_path = doc_paths[best_idx]
+
+            print(
+                f"TF-IDF selected document {best_path} with similarity {best_score:.4f}"
+            )
+
+            # Use QA model on the selected document
+            answer = self.qa_pipeline(question=self.user_question, context=best_text)
+            print("=" * 100)
+            print("Answer:", answer["answer"])
+            print("Score:", answer["score"])
+            print("=" * 100)
