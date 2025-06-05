@@ -6,7 +6,6 @@ from whoosh.qparser import QueryParser, OrGroup
 from whoosh.analysis import StemmingAnalyzer
 import spacy
 from transformers import pipeline
-import pdfplumber
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 from whoosh.analysis import StemmingAnalyzer, CharsetFilter
@@ -17,7 +16,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-# Silence pdfminer/pdfplumber “CropBox missing” messages
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
 logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
@@ -50,7 +48,6 @@ class Elisa:
         else:
             self.ix = index.open_dir("indexdir")
 
-
     def set_question(self, question):
         self.user_question = question
         self.search_terms = self.extract_question_entities(self.nlp(question))
@@ -68,9 +65,8 @@ class Elisa:
             with open(file_path, "r", encoding="utf-8") as f:
                 text = f.read()
         return text
-    
-    def chunk_text(self, text, chunk_size=500, overlap=50):
 
+    def chunk_text(self, text, chunk_size=500, overlap=50):
         if len(text) <= chunk_size:
             return [text]
         chunks = []
@@ -111,7 +107,6 @@ class Elisa:
         ]
         return " ".join(terms)
 
-
     def query_parsing(self):
         w = scoring.BM25F(B=0.9, content_B=0.9, K1=1.2)
         qp = QueryParser("content", self.ix.schema, group=OrGroup.factory(0.9))
@@ -123,13 +118,13 @@ class Elisa:
             print("BM25 found", len(hits), "candidates.")
 
             if not hits:
-                print("No candidates found.")
+                print("No candidates")
                 return
 
-            # Stage 1: collect the candidate texts
+            # collect the candidate texts
             candidate_texts = [hit["content"] for hit in hits]
 
-            # Stage 2: compute embeddings for question + candidates
+            #  calc embeddings 
             q_emb = self.sentence_model.encode(
                 self.user_question, convert_to_numpy=True
             )
@@ -143,16 +138,16 @@ class Elisa:
             )
             best_idx = int(np.argmax(cos_sims))
             best_para = candidate_texts[best_idx]
-            print(
-                f"Selected paragraph index {best_idx} with similarity {cos_sims[best_idx]:.4f}"
-            )
+            # print(
+            #     f"Selected paragraph index {best_idx} with similarity {cos_sims[best_idx]:.4f}"
+            # )
 
-            # Stage 3: run QA over that single best paragraph
             answer = self.qa_pipeline(question=self.user_question, context=best_para)
             print("="* 100)
             print("Answer:", answer["answer"])
             print("Score:", answer["score"])
             print("=" * 100)
+            return answer["answer"], answer["score"]
 
     def query_parsing_tfidf(self):
         with self.ix.searcher() as searcher:
@@ -169,31 +164,27 @@ class Elisa:
             candidate_texts = [hit["content"] for hit in hits]
             doc_paths = [hit["path"] for hit in hits]
 
-            # Prepare the corpus: combine question and candidate texts
             corpus = [self.user_question] + candidate_texts
 
-            # Initialize and fit TfidfVectorizer
             vectorizer = TfidfVectorizer(stop_words="english")
             tfidf_matrix = vectorizer.fit_transform(corpus)
 
-            # Compute cosine similarity between the question and documents
             similarities = cosine_similarity(
                 tfidf_matrix[0:1], tfidf_matrix[1:]
             ).flatten()
 
-            # Select the best matching document
             best_idx = int(np.argmax(similarities))
             best_score = similarities[best_idx]
             best_text = candidate_texts[best_idx]
             best_path = doc_paths[best_idx]
 
-            print(
-                f"TF-IDF selected document {best_path} with similarity {best_score:.4f}"
-            )
+            # print(
+            #     f"TF-IDF selected document {best_path} with similarity {best_score:.4f}"
+            # )
 
-            # Use QA model on the selected document
             answer = self.qa_pipeline(question=self.user_question, context=best_text)
             print("=" * 100)
             print("Answer:", answer["answer"])
             print("Score:", answer["score"])
             print("=" * 100)
+            return answer["answer"], answer["score"]

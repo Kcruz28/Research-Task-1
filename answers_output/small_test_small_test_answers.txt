@@ -1,0 +1,43 @@
+Q1: What is the color of the bike?
+A1 (BM25): red (Score: 0.8833003640174866)
+A1 (TF-IDF): red (Score: 0.8833003640174866)
+
+Q2: What color is Tom's bike?
+A2 (BM25): red (Score: 0.9681392312049866)
+A2 (TF-IDF): red (Score: 0.9681392312049866)
+
+Q3: Who rides a bike to school every day?
+A3 (BM25): Tom (Score: 0.5586878061294556)
+A3 (TF-IDF): Tom (Score: 0.5586878061294556)
+
+Q4: Where does Tom ride his bike?
+A4 (BM25): to school (Score: 0.7761022448539734)
+A4 (TF-IDF): to school (Score: 0.7761022448539734)
+
+Q5: How often does Tom ride his bike to school?
+A5 (BM25): every day (Score: 0.9714545607566833)
+A5 (TF-IDF): every day (Score: 0.9714545607566833)
+
+Q6: Does Tom have a red or a blue bike?
+A6 (BM25): red (Score: 0.8568714261054993)
+A6 (TF-IDF): red (Score: 0.8568714261054993)
+
+Q7: What does Tom use to go to school?
+A7 (BM25): red bike (Score: 0.5073771476745605)
+A7 (TF-IDF): red bike (Score: 0.5073771476745605)
+
+Q8: Is Tom’s bike red?
+A8 (BM25): red bike (Score: 0.24463625252246857)
+A8 (TF-IDF): red bike (Score: 0.24463625252246857)
+
+Q9: Does Tom ride his bike every day or only sometimes?
+A9 (BM25): every day (Score: 0.7747768759727478)
+A9 (TF-IDF): every day (Score: 0.7747768759727478)
+
+Q10: Who goes to school on a red bike?
+A10 (BM25): Tom (Score: 0.31717148423194885)
+A10 (TF-IDF): Tom (Score: 0.31717148423194885)
+
+Q11: What does Tom do every day?
+A11 (BM25): rides his bike to school (Score: 0.819505512714386)
+A11 (TF-IDF): rides his bike to school (Score: 0.819505512714386)

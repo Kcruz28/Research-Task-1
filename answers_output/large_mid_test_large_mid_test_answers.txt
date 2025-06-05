@@ -1,14 +1,19 @@
-Q: When was the Great Wall of China designated a World Heritage site?
-A: No answer found.
+Q1: When was the Great Wall of China designated a World Heritage site?
+A1 (BM25): 1987 (Score: 0.9171209335327148)
+A1 (TF-IDF): 1987 (Score: 0.9171209335327148)
 
-Q: How long is the Great Wall of China?
-A: No answer found.
+Q2: How long is the Great Wall of China?
+A2 (BM25): 21,196 kilometers (Score: 0.6257050633430481)
+A2 (TF-IDF): 7th century BC (Score: 0.01486022025346756)
 
-Q: What dynasty built the most famous sections of the Great Wall?
-A: No answer found.
+Q3: What dynasty built the most famous sections of the Great Wall?
+A3 (BM25): Ming dynasty (Score: 0.45258021354675293)
+A3 (TF-IDF): Ming dynasty (Score: 0.45258021354675293)
 
-Q: What were some functions of the Great Wall besides defense?
-A: No answer found.
+Q4: What were some functions of the Great Wall besides defense?
+A4 (BM25): border controls (Score: 0.25140947103500366)
+A4 (TF-IDF): border controls (Score: 0.25140947103500366)
 
-Q: What were used for signaling along the Great Wall?
-A: No answer found.
+Q5: What were used for signaling along the Great Wall?
+A5 (BM25): smoke or fire (Score: 0.8681877255439758)
+A5 (TF-IDF): smoke or fire (Score: 0.8681877255439758)

@@ -1,0 +1,108 @@
+Q1: What does BERT stand for?
+A1 (BM25): architec-
+ture (Score: 0.00841306522488594)
+A1 (TF-IDF): Bidirectional Encoder Representations from
+Transformers (Score: 0.2572270631790161)
+
+Q2: Which company developed BERT?
+A2 (BM25): Figure 3 (Score: 0.008308305405080318)
+A2 (TF-IDF): Figure 3 (Score: 0.008308305405080318)
+
+Q3: What is the main goal of BERT?
+A3 (BM25): 
+tuning (Score: 0.06532124429941177)
+A3 (TF-IDF): 
+tuning (Score: 0.06532124429941177)
+
+Q4: What type of model architecture does BERT use?
+A4 (BM25): pre-trained architec-
+ture (Score: 0.02044624648988247)
+A4 (TF-IDF): pre-trained architec-
+ture (Score: 0.03747032955288887)
+
+Q5: What is the purpose of the [CLS] token in BERT?
+A5 (BM25): Pre-training (Score: 0.00021927185298409313)
+A5 (TF-IDF): Pre-training (Score: 0.00021927185298409313)
+
+Q6: What is the purpose of the [SEP] token in BERT?
+A6 (BM25): to bias the
+representation towards the actual observed
+word (Score: 0.012219250202178955)
+A6 (TF-IDF): 
+handle a variety of down-stream tasks (Score: 0.0004626568406820297)
+
+Q7: What does the Masked Language Model (MLM) task involve?
+A7 (BM25): randomly masks some of
+the tokens from the input (Score: 0.006871063262224197)
+A7 (TF-IDF): next sentence prediction (Score: 0.06283064186573029)
+
+Q8: What is the Next Sentence Prediction (NSP) task?
+A8 (BM25): C (Score: 0.012635533697903156)
+A8 (TF-IDF): No NSP (Score: 7.850215479265898e-05)
+
+Q9: Which two large text corpora were used to pre-train BERT?
+A9 (BM25): Zhu et al.,
+2015) and English Wikipedia (Score: 0.01175795216113329)
+A9 (TF-IDF): 
+
+ing and auto-encoder objectives (Score: 0.0015610238770022988)
+
+Q10: How many parameters does BERTBASE have?
+A10 (BM25): Feature-based approach (Score: 7.416119478875771e-05)
+A10 (TF-IDF): 110M parameters (Score: 0.4603337347507477)
+
+Q11: How does BERT differ from previous unidirectional language models?
+A11 (BM25): mini-
+
+mal difference (Score: 0.024685999378561974)
+A11 (TF-IDF): jointly conditioning on both
+left and right context in all layers (Score: 0.07201387733221054)
+
+Q12: Why is bidirectionality important for BERT’s performance?
+A12 (BM25): 
+rectionality (Score: 0.0006831745849922299)
+A12 (TF-IDF): two pre-training tasks (Score: 0.006856412626802921)
+
+Q13: How does BERT handle input sequences containing sentence pairs?
+A13 (BM25): self-attention mechanism (Score: 0.00010237553215119988)
+A13 (TF-IDF): one token sequence (Score: 0.005731150507926941)
+
+Q14: What masking strategy does BERT use during pre-training for MLM?
+A14 (BM25): a
+mixed strategy (Score: 0.08459789305925369)
+A14 (TF-IDF): a
+mixed strategy (Score: 0.08459789305925369)
+
+Q15: Why does BERT sometimes replace masked tokens with random tokens or keep them unchanged?
+A15 (BM25): Keep the word un-
+changed (Score: 0.004633999429643154)
+A15 (TF-IDF): 
+pear during ﬁne-tuning (Score: 5.27286647411529e-05)
+
+Q16: How does BERT’s pre-training procedure help with downstream tasks?
+A16 (BM25): sep-
+arate ﬁne-tuned models (Score: 0.015015047043561935)
+A16 (TF-IDF): sep-
+arate ﬁne-tuned models (Score: 0.015015047043561935)
+
+Q17: What is the difference between feature-based and fine-tuning approaches in using pre-trained models?
+A17 (BM25): using only
+the RND strategy performs much worse (Score: 0.00188277882989496)
+A17 (TF-IDF): using only
+the RND strategy performs much worse (Score: 0.00188277882989496)
+
+Q18: How does BERT perform on the GLUE benchmark compared to previous models?
+A18 (BM25): 4.6%
+absolute accuracy improvement (Score: 0.022111380472779274)
+A18 (TF-IDF): 
+sults on 11 NLP tasks (Score: 0.0001596728543518111)
+
+Q19: What are the main advantages of BERT for question answering tasks?
+A19 (BM25): Stanford Question Answering Dataset (Score: 0.006270751357078552)
+A19 (TF-IDF): conceptually simple and empirically
+ (Score: 0.03490089997649193)
+
+Q20: How does BERT’s architecture allow it to be adapted to different NLP tasks with minimal changes?
+A20 (BM25): uniﬁed ar-
+chitecture (Score: 0.024434732273221016)
+A20 (TF-IDF): Figure 4 (Score: 0.005325437057763338)

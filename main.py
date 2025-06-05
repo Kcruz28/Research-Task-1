@@ -1,4 +1,4 @@
-import cooking
+import model
 import pdfplumber
 import logging
 
@@ -7,7 +7,7 @@ logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
 
 if "__main__" == __name__:
-    path = "small_text.txt"
+    path = "demo.txt"
     split_path = path.split(".")
     if split_path[-1].lower() == "pdf":
         text_type = "pdf"
@@ -18,7 +18,7 @@ if "__main__" == __name__:
         exit(1)
 
     print("Loading models")
-    elisa = cooking.Elisa()
+    elisa = model.Elisa()
 
     while True:
         print("-"*100)

@@ -56,4 +56,4 @@ What are the main advantages of BERT for question answering tasks?
 Its bidirectional context and unified architecture enable superior understanding and extraction of answers from passages, resulting in top performance on benchmarks like SQuAD.
 
 How does BERT’s architecture allow it to be adapted to different NLP tasks with minimal changes?
-The same pre-trained model can be fine-tuned for various tasks by adding simple output layers, without major modifications to the core architecture
+The same pre-trained model can be fine-tuned for various tasks by adding simple output layers, without major modifications to the core architecture.
